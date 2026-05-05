@@ -37,3 +37,7 @@ variable "cluster_version" {
 variable "node_instance_type" {
   type = string
 }
+
+variable "ecr_repository_name" {
+  type = string
+}
