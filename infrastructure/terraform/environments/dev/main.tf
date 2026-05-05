@@ -18,3 +18,9 @@ module "eks" {
   private_subnet_ids = module.network.private_subnet_ids
   node_instance_type = var.node_instance_type
 }
+
+module "ecr" {
+  source = "../../modules/ecr"
+
+  ecr_repository_name = var.ecr_repository_name
+}
