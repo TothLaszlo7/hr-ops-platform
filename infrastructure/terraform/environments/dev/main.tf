@@ -24,3 +24,10 @@ module "ecr" {
 
   ecr_repository_name = var.ecr_repository_name
 }
+
+module "iam" {
+  source = "../../modules/iam"
+
+  cluster_name    = var.cluster_name
+  oidc_issuer_url = module.eks.oidc_issuer_url
+}
