@@ -31,3 +31,12 @@ module "iam" {
   cluster_name    = var.cluster_name
   oidc_issuer_url = module.eks.oidc_issuer_url
 }
+
+module "rds" {
+  source = "../../modules/rds"
+
+  db_name            = var.db_name
+  db_username        = var.db_username
+  private_subnet_ids = module.network.private_subnet_ids
+  vpc_id             = module.network.vpc_id
+}

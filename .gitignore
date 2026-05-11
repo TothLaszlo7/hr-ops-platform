@@ -1,7 +1,51 @@
-node_modules/
+# Terraform
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+crash.log
+
+# Environment files
 .env
-.DS_Store
+.env.*
 *.tfvars
-.terraform/
-terraform.tfstate
-terraform.tfstate.*
+
+# Node
+node_modules/
+
+# OS
+.DS_Store
+
+# IDE
+.vscode/
+
+# Logs
+*.log
+
+# Terraform plans
+*.tfplan
+
+# Terraform lock backup
+.terraform.lock.hcl.backup
+
+# Kubernetes secrets
+kubernetes/secret.yaml
+
+# Local kube config
+kubeconfig
+
+# Docker
+*.tar
+
+# Linux
+*.swp
+
+# Coverage / test
+coverage/
+
+# Temporary files
+tmp/
+temp/
+
+# Mac/Linux hidden files
+.AppleDouble
+.LSOverride
