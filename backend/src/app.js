@@ -30,4 +30,20 @@ app.post('/employees', (req, res) => {
   res.status(201).json(newEmployee);
 });
 
+app.post('/db-init', async (req, res) => {
+  try {
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS employees (
+        id SERIAL PRIMARY KEY,
+        name VARCHAR(100) NOT NULL
+      );
+    `);
+
+    res.json({ message: 'Employees table created' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Database initialization failed' });
+  }
+});
+
 module.exports = app;
