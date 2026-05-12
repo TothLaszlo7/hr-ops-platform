@@ -1,14 +1,34 @@
-const { Pool } = require('pg');
+const { Pool } = require("pg");
+const { getDatabaseSecret } = require("./secrets");
 
-const pool = new Pool({
-  host: process.env.DB_HOST,
-  port: process.env.DB_PORT,
-  database: process.env.DB_NAME,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  ssl: {
-  rejectUnauthorized: false,
+let pool;
+
+async function initDbPool() {
+  if (pool) {
+    return pool;
+  }
+
+  const secret = await getDatabaseSecret();
+
+  pool = new Pool({
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
+    database: process.env.DB_NAME,
+    user: secret.username,
+    password: secret.password,
+    ssl: {
+      rejectUnauthorized: false,
+    },
+  });
+
+  return pool;
 }
-});
 
-module.exports = pool;
+async function query(text, params) {
+  const dbPool = await initDbPool();
+  return dbPool.query(text, params);
+}
+
+module.exports = {
+  query,
+};
