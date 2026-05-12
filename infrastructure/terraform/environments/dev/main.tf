@@ -30,6 +30,7 @@ module "iam" {
 
   cluster_name    = var.cluster_name
   oidc_issuer_url = module.eks.oidc_issuer_url
+  rds_secret_arn  = module.rds.master_user_secret_arn
 }
 
 module "rds" {
@@ -39,4 +40,11 @@ module "rds" {
   db_username        = var.db_username
   private_subnet_ids = module.network.private_subnet_ids
   vpc_id             = module.network.vpc_id
+}
+
+resource "aws_eks_pod_identity_association" "backend" {
+  cluster_name    = var.cluster_name
+  namespace       = "hr-ops"
+  service_account = "backend-sa"
+  role_arn        = module.iam.backend_pod_role_arn
 }

@@ -50,3 +50,44 @@ resource "aws_iam_role_policy_attachment" "aws_load_balancer_controller" {
   policy_arn = aws_iam_policy.aws_load_balancer_controller.arn
 }
 
+resource "aws_iam_policy" "backend_secrets_read" {
+  name = "${var.cluster_name}-backend-secrets-read"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "secretsmanager:GetSecretValue"
+        ]
+        Resource = var.rds_secret_arn
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role" "backend_pod" {
+  name = "${var.cluster_name}-backend-pod-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Principal = {
+          Service = "pods.eks.amazonaws.com"
+        }
+        Action = [
+          "sts:AssumeRole",
+          "sts:TagSession"
+        ]
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "backend_secrets_read" {
+  role       = aws_iam_role.backend_pod.name
+  policy_arn = aws_iam_policy.backend_secrets_read.arn
+}
