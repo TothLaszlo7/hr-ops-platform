@@ -1,0 +1,21 @@
+namespace: hr-ops
+
+backend:
+  name: backend
+  serviceAccountName: backend-sa
+  replicas: 2
+  image:
+    repository: ""
+    tag: ""
+    pullPolicy: Always
+  containerPort: 3000
+  service:
+    name: backend-service
+    type: ClusterIP
+    port: 80
+    targetPort: 3000
+  dbSecretArn: ""
+  database:
+    host: ""
+    port: "5432"
+    name: ""
