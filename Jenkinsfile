@@ -31,6 +31,7 @@ spec:
         ECR_REPOSITORY = "554422868760.dkr.ecr.eu-west-1.amazonaws.com/hr-ops-backend"
         RDS_IDENTIFIER = "hr-ops-postgres"
         IMAGE_TAG = "${BUILD_NUMBER}"
+        REPORTS_BUCKET_NAME = "hr-ops-reports-l8jtpn"
     }
 
     stages {
@@ -63,10 +64,6 @@ spec:
 
                         env.DB_SECRET_ARN = sh(
                             script: "aws rds describe-db-instances --region $AWS_REGION --db-instance-identifier $RDS_IDENTIFIER --query 'DBInstances[0].MasterUserSecret.SecretArn' --output text",
-                            returnStdout: true
-                        ).trim()
-                        env.REPORTS_BUCKET_NAME = sh(
-                            script: "aws s3api list-buckets --query 'Buckets[0].Name' --output text",
                             returnStdout: true
                         ).trim()
                     }

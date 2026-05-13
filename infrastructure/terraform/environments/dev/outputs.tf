@@ -14,3 +14,7 @@ output "master_user_secret_arn" {
   value     = module.rds.master_user_secret_arn
   sensitive = true
 }
+
+output "reports_bucket_name" {
+  value = module.storage.reports_bucket_name
+}
