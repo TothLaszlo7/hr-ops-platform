@@ -18,8 +18,6 @@ spec:
       command:
         - /busybox/cat
       tty: true
-      args:
-        - infinity
 """
         }
     }
