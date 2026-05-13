@@ -114,7 +114,8 @@ resource "aws_iam_policy" "jenkins_deploy" {
           "ecr:PutImage",
           "ecr:UploadLayerPart",
           "ecr:BatchGetImage",
-          "ecr:DescribeRepositories"
+          "ecr:DescribeRepositories",
+          "rds:DescribeDBInstances"
         ]
         Resource = "*"
       },
