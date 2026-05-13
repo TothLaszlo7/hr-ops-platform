@@ -16,7 +16,8 @@ spec:
     - name: kaniko
       image: gcr.io/kaniko-project/executor:latest
       command:
-        - sleep
+        - /busybox/cat
+      tty: true
       args:
         - infinity
 """
