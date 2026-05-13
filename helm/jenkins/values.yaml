@@ -1,0 +1,22 @@
+controller:
+  image:
+    registry: "554422868760.dkr.ecr.eu-west-1.amazonaws.com"
+    repository: "hr-ops-jenkins"
+    tag: "latest"
+
+  serviceType: ClusterIP
+
+  admin:
+    username: admin
+    password: admin123
+
+  resources:
+    requests:
+      cpu: "500m"
+      memory: "1Gi"
+    limits:
+      cpu: "1000m"
+      memory: "2Gi"
+
+persistence:
+  enabled: false
