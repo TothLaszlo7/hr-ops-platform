@@ -15,11 +15,11 @@ spec:
         - infinity
     - name: kaniko
       image: gcr.io/kaniko-project/executor:debug
-        command:
-          - /busybox/sh
-          - -c
-          - cat
-        tty: true
+      command:
+        - /busybox/sh
+        - -c
+        - cat
+      tty: true
     """
         }
     }
