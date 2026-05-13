@@ -18,5 +18,10 @@ controller:
       cpu: "1000m"
       memory: "2Gi"
 
+agent:
+  image:
+    repository: "554422868760.dkr.ecr.eu-west-1.amazonaws.com/hr-ops-jenkins-agent"
+    tag: "latest"
+
 persistence:
   enabled: false
