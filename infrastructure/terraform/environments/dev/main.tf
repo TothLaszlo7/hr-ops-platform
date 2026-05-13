@@ -47,4 +47,19 @@ resource "aws_eks_pod_identity_association" "backend" {
   namespace       = "hr-ops"
   service_account = "backend-sa"
   role_arn        = module.iam.backend_pod_role_arn
+
+  depends_on = [
+    module.eks
+  ]
+}
+
+resource "aws_eks_pod_identity_association" "jenkins" {
+  cluster_name    = var.cluster_name
+  namespace       = "jenkins"
+  service_account = "jenkins"
+  role_arn        = module.iam.jenkins_pod_role_arn
+
+  depends_on = [
+    module.eks
+  ]
 }

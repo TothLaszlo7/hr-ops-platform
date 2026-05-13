@@ -91,3 +91,72 @@ resource "aws_iam_role_policy_attachment" "backend_secrets_read" {
   role       = aws_iam_role.backend_pod.name
   policy_arn = aws_iam_policy.backend_secrets_read.arn
 }
+
+resource "aws_iam_policy" "jenkins_deploy" {
+  name = "${var.cluster_name}-jenkins-deploy"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "ecr:GetAuthorizationToken"
+        ]
+        Resource = "*"
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "ecr:BatchCheckLayerAvailability",
+          "ecr:CompleteLayerUpload",
+          "ecr:InitiateLayerUpload",
+          "ecr:PutImage",
+          "ecr:UploadLayerPart",
+          "ecr:BatchGetImage",
+          "ecr:DescribeRepositories"
+        ]
+        Resource = "*"
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "eks:DescribeCluster"
+        ]
+        Resource = "*"
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "secretsmanager:GetSecretValue"
+        ]
+        Resource = var.rds_secret_arn
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role" "jenkins_pod" {
+  name = "${var.cluster_name}-jenkins-pod-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Principal = {
+          Service = "pods.eks.amazonaws.com"
+        }
+        Action = [
+          "sts:AssumeRole",
+          "sts:TagSession"
+        ]
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "jenkins_deploy" {
+  role       = aws_iam_role.jenkins_pod.name
+  policy_arn = aws_iam_policy.jenkins_deploy.arn
+}
