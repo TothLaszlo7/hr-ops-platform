@@ -63,3 +63,14 @@ resource "aws_eks_pod_identity_association" "jenkins" {
     module.eks
   ]
 }
+
+resource "aws_eks_pod_identity_association" "ebs_csi_driver" {
+  cluster_name    = var.cluster_name
+  namespace       = "kube-system"
+  service_account = "ebs-csi-controller-sa"
+  role_arn        = module.iam.ebs_csi_driver_role_arn
+
+  depends_on = [
+    module.eks
+  ]
+}

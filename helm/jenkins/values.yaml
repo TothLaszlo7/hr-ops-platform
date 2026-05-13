@@ -26,4 +26,6 @@ agent:
     tag: "latest"
 
 persistence:
-  enabled: false
+  enabled: true
+  storageClass: gp2
+  size: 8Gi
