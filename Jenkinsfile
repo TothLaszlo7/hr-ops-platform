@@ -98,6 +98,7 @@ spec:
                       aws eks update-kubeconfig --region $AWS_REGION --name $CLUSTER_NAME
 
                       helm upgrade --install hr-ops ./helm/hr-ops \
+                        -n default \
                         --set backend.image.repository=$ECR_REPOSITORY \
                         --set backend.image.tag=$IMAGE_TAG \
                         --set backend.dbSecretArn=$DB_SECRET_ARN \
