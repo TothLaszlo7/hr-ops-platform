@@ -9,3 +9,7 @@ variable "oidc_issuer_url" {
 variable "rds_secret_arn" {
   type = string
 }
+
+variable "reports_bucket_arn" {
+  type = string
+}
