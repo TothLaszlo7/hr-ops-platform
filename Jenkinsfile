@@ -65,6 +65,10 @@ spec:
                             script: "aws rds describe-db-instances --region $AWS_REGION --db-instance-identifier $RDS_IDENTIFIER --query 'DBInstances[0].MasterUserSecret.SecretArn' --output text",
                             returnStdout: true
                         ).trim()
+                        env.REPORTS_BUCKET_NAME = sh(
+                            script: "aws s3api list-buckets --query 'Buckets[0].Name' --output text",
+                            returnStdout: true
+                        ).trim()
                     }
 
                     sh '''
@@ -104,7 +108,8 @@ spec:
                         --set backend.dbSecretArn=$DB_SECRET_ARN \
                         --set backend.database.host=$DB_HOST \
                         --set backend.database.port=$DB_PORT \
-                        --set backend.database.name=$DB_NAME
+                        --set backend.database.name=$DB_NAME \
+                        --set backend.reportsBucketName=$REPORTS_BUCKET_NAME
                     '''
                 }
             }

@@ -186,3 +186,30 @@ resource "aws_iam_role_policy_attachment" "ebs_csi_driver" {
   role       = aws_iam_role.ebs_csi_driver.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
 }
+
+resource "aws_iam_policy" "backend_s3_access" {
+  name = "${var.cluster_name}-backend-s3-access"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "s3:PutObject",
+          "s3:GetObject",
+          "s3:ListBucket"
+        ]
+        Resource = [
+          var.reports_bucket_arn,
+          "${var.reports_bucket_arn}/*"
+        ]
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "backend_s3_access" {
+  role       = aws_iam_role.backend_pod.name
+  policy_arn = aws_iam_policy.backend_s3_access.arn
+}

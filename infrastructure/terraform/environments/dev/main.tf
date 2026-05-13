@@ -28,9 +28,10 @@ module "ecr" {
 module "iam" {
   source = "../../modules/iam"
 
-  cluster_name    = var.cluster_name
-  oidc_issuer_url = module.eks.oidc_issuer_url
-  rds_secret_arn  = module.rds.master_user_secret_arn
+  cluster_name       = var.cluster_name
+  oidc_issuer_url    = module.eks.oidc_issuer_url
+  rds_secret_arn     = module.rds.master_user_secret_arn
+  reports_bucket_arn = module.storage.reports_bucket_arn
 }
 
 module "rds" {
@@ -73,4 +74,10 @@ resource "aws_eks_pod_identity_association" "ebs_csi_driver" {
   depends_on = [
     module.eks
   ]
+}
+
+module "storage" {
+  source = "../../modules/storage"
+
+  project_name = var.project_name
 }

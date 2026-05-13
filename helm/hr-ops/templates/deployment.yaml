@@ -27,5 +27,9 @@ spec:
               value: {{ .Values.backend.database.port | quote }}
             - name: DB_NAME
               value: {{ .Values.backend.database.name | quote }}
+            - name: REPORTS_BUCKET_NAME
+              value: {{ .Values.backend.reportsBucketName | quote }}
+            - name: AWS_REGION
+              value: eu-west-1
           ports:
             - containerPort: {{ .Values.backend.containerPort }}
